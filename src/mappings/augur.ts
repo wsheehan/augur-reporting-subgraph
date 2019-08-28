@@ -3,16 +3,13 @@
 // imports
 import {
   handleMarketCreated,
-  handleMarketFinalized,
-  handleReportingParticpiantDisavowed,
-  handleMarketMigrated,
-  handleMarketMailboxTransferred,
-  handleMarketParticipantsDisavowed,
-  handleMarketTransferred,
-  handleCompleteSetPurchased,
-  handleCompleteSetSold,
-  handleTradingProceedsClaimed
+  handleMarketFinalized
 } from "./market";
+
+import { 
+  handleFeeWindowCreated, 
+  handleFeeWindowRedeemed 
+} from "./feeWindow";
 
 import {
   handleInitialReportSubmitted,
@@ -28,17 +25,6 @@ import {
 } from "./disputeCrowdsourcer";
 
 import {
-  handleUniverseCreated,
-  handleUniverseForked
-} from "./universe";
-
-import {
-  handleOrderCanceled,
-  handleOrderCreated,
-  handleOrderFilled
-} from "./order";
-
-import {
   handleTokensTransferred,
   handleTokensMinted,
   handleTokensBurned
@@ -48,14 +34,8 @@ import {
 export {
   handleMarketCreated,
   handleMarketFinalized,
-  handleReportingParticpiantDisavowed,
-  handleMarketMigrated,
-  handleMarketMailboxTransferred,
-  handleMarketParticipantsDisavowed,
-  handleMarketTransferred,
-  handleCompleteSetPurchased,
-  handleCompleteSetSold,
-  handleTradingProceedsClaimed,
+  handleFeeWindowCreated,
+  handleFeeWindowRedeemed,
   handleInitialReportSubmitted,
   handleInitialReporterRedeemed,
   handleInitialReporterTransferred,
@@ -63,11 +43,6 @@ export {
   handleDisputeCrowdsourcerContribution,
   handleDisputeCrowdsourcerCreated,
   handleDisputeCrowdsourcerRedeemed,
-  handleUniverseCreated,
-  handleUniverseForked,
-  handleOrderCanceled,
-  handleOrderCreated,
-  handleOrderFilled,
   handleTokensTransferred,
   handleTokensMinted,
   handleTokensBurned
