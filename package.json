@@ -1,18 +1,19 @@
 {
   "name": "Augur-subgraph",
   "version": "1.0.0",
-  "repository": "https://github.com/graphprotocol/Augur-subgraph",
+  "repository": "https://github.com/wsheehan/augur-subgraph",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen --output-dir src/types/ subgraph.yaml",
-    "build": "graph build subgraph.yaml",
-    "build-ipfs": "graph build --ipfs /ip4/127.0.0.1/tcp/5001 subgraph.yaml",
-    "build-wast": "graph build -t wast subgraph.yaml",
-    "deploy": "graph deploy subgraph.yaml --ipfs /ip4/127.0.0.1/tcp/5001 --node http://127.0.0.1:8020 --subgraph-name augur-subgraph"
+    "build": "graph build",
+    "create-local": "graph create wsheehan/augur-reporting-subgraph --node http://127.0.0.1:8020",
+    "remove-local": "graph remove wsheehan/augur-reporting-subgraph --node http://127.0.0.1:8020",
+    "deploy-local": "graph deploy wsheehan/augur-reporting-subgraph subgraph.yaml --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020",
+    "deploy-prod": "graph deploy --debug wsheehan/augur-reporting-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.5.0",
-    "@graphprotocol/graph-ts": "^0.5.0"
+    "@graphprotocol/graph-cli": "graphprotocol/graph-cli",
+    "@graphprotocol/graph-ts": "graphprotocol/graph-ts"
   },
-  "author": "David Kajpust <kajpustd@gmail.com>"
+  "author": "Will Sheehan"
 }
