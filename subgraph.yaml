@@ -12,7 +12,7 @@ dataSources:
       abi: Augur
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.1
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Market
@@ -20,7 +20,6 @@ dataSources:
         - DisputeCrowdsourcer
         - Universe
         - Order
-        - ClaimedTradingProceed
         - Token
         - TransferredTokens
         - BurnedTokens
@@ -29,69 +28,40 @@ dataSources:
       abis:
         - name: Augur
           file: ./abis/Augur.json
+        - name: Market
+          file: ./abis/Market.json
       eventHandlers: # 28 total events , leave out EscapeHatchChanged, timestampset, so 26 handlers
         # Market Handlers below
-        - event: MarketCreated(bytes32,string,string,address,address,address,bytes32[],uint256,int256,int256,uint8)
+        - event: MarketCreated(indexed bytes32,string,string,indexed address,address,indexed address,bytes32[],uint256,int256,int256,uint8)
           handler: handleMarketCreated
-        - event: ReportingParticipantDisavowed(address,address,address)
-          handler: handleReportingParticpiantDisavowed
-        - event: MarketFinalized(address,address)
+        - event: MarketFinalized(indexed address,indexed address)
           handler: handleMarketFinalized
-        - event: MarketMigrated(address,address,address)
-          handler: handleMarketMigrated
-        - event: MarketMailboxTransferred(address,address,address,address,address)
-          handler: handleMarketMailboxTransferred
-        - event: MarketParticipantsDisavowed(address,address)
-          handler: handleMarketParticipantsDisavowed
-        - event: MarketTransferred(address,address,address,address)
-          handler: handleMarketTransferred
-        - event: CompleteSetsPurchased(address,address,address,uint256)
-          handler: handleCompleteSetPurchased
-        - event: CompleteSetsSold(address,address,address,uint256)
-          handler: handleCompleteSetSold
-        - event: TradingProceedsClaimed(address,address,address,address,uint256,uint256,uint256)
-          handler: handleTradingProceedsClaimed
 #          # Initial Report handlers Below
-        - event: InitialReportSubmitted(address,address,address,uint256,bool,uint256[],bool)
+        - event: InitialReportSubmitted(indexed address,indexed address,indexed address,uint256,bool,uint256[],bool)
           handler: handleInitialReportSubmitted
-        - event: InitialReporterRedeemed(address,address,address,uint256,uint256,uint256,uint256[])
+        - event: InitialReporterRedeemed(indexed address,indexed address,indexed address,uint256,uint256,uint256,uint256[])
           handler: handleInitialReporterRedeemed
-        - event: InitialReporterTransferred(address,address,address,address)
+        - event: InitialReporterTransferred(indexed address,indexed address,address,address)
           handler: handleInitialReporterTransferred
 #          # Dispute Crowdsourcer handlers below
-        - event: DisputeCrowdsourcerCompleted(address,address,address)
+        - event: DisputeCrowdsourcerCompleted(indexed address,indexed address,address)
           handler: handleDisputeCrowdsourcerCompleted
-        - event: DisputeCrowdsourcerContribution(address,address,address,address,uint256)
+        - event: DisputeCrowdsourcerContribution(indexed address,indexed address,indexed address,address,uint256)
           handler: handleDisputeCrowdsourcerContribution
-        - event: DisputeCrowdsourcerCreated(address,address,address,uint256[],uint256,bool)
+        - event: DisputeCrowdsourcerCreated(indexed address,indexed address,address,uint256[],uint256,bool)
           handler: handleDisputeCrowdsourcerCreated
-        - event: DisputeCrowdsourcerRedeemed(address,address,address,address,uint256,uint256,uint256,uint256[])
+        - event: DisputeCrowdsourcerRedeemed(indexed address,indexed address,indexed address,address,uint256,uint256,uint256,uint256[])
           handler: handleDisputeCrowdsourcerRedeemed
-#          # Universe handlers below
-        - event: UniverseCreated(address,address,uint256[],bool)
-          handler: handleUniverseCreated
-        - event: UniverseForked(address)
-          handler: handleUniverseForked
-#          # Order handlers below
-        - event: OrderCanceled(address,address,address,bytes32,uint8,uint256,uint256)
-          handler: handleOrderCanceled
-        - event: OrderCreated(uint8,uint256,uint256,address,uint256,uint256,bytes32,bytes32,address,address)
-          handler: handleOrderCreated
-        - event: OrderFilled(address,address,address,bytes32,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bytes32)
-          handler: handleOrderFilled
+        - event: FeeWindowCreated(indexed address,address,uint256,uint256,uint256)
+          handler: handleFeeWindowCreated  
           # token handlers below
-#        - event: TokensTransferred(address,address,address,address,uint256,uint8,address)
-#          handler: handleTokensTransferred
-#        - event: TokensMinted(address,address,address,uint256,uint8,address)
-#          handler: handleTokensMinted
-#        - event: TokensBurned(address,address,address,uint256,uint8,address)
-#          handler: handleTokensBurned
-#          # dispute window handler below NOTE: does not exist on the current mainnet version
-#        - event: DisputeWindowCreated(address,address,uint256,uint256,uint256)
-#          handler: handleDisputeWindowCreated
+        # - event: TokensTransferred(indexed address,indexed address,indexed address,address,uint256,uint8,address)
+        #   handler: handleTokensTransferred
+        # - event: TokensMinted(indexed address,indexed address,indexed address,uint256,uint8,address)
+        #   handler: handleTokensMinted
+        # - event: TokensBurned(indexed address,indexed address,indexed address,uint256,uint8,address)
+        #   handler: handleTokensBurned
       file: ./src/mappings/Augur.ts
-
-
 
 
 
