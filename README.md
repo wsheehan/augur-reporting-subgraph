@@ -7,58 +7,8 @@ There are five high level queries - `market`, `tokens`, `users`. There are entit
 
 ```
 {
-  markets {
-    id
-    topic
-    description
-    extraInfo
-    universe
-    marketCreator
-    outcomes
-    marketType
-    finalized
-    marketCreationFee
-    disputes {
-      id
-      completed
-      outcome
-      round
-      size
-      tokens {
-        id
-        dispute
-        market
-        tokenOwners {
-          id
-          amount
-        }
-      }
-    }
-  }
-  users {
-    id
-    markets {
-      ...
-    }
-    disputes {
-      ...
-    }
-    tokensOwned {
-      id
-      tokenAddress
-      amount
-      tokenType
-    }
-  }
-  tokens {
-    id
-    tokenAddress
-    tokenType
-    tokenOwners {
-      id
-      amount
-    }
-  }
+  // TBD
+  markets {}
 }
 
 ```
