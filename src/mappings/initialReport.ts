@@ -1,5 +1,5 @@
 // Import APIs from graph-ts
-import {Bytes} from '@graphprotocol/graph-ts'
+import {Bytes, BigInt} from '@graphprotocol/graph-ts'
 
 // Import event types from the registrar contract ABI
 import {
@@ -9,36 +9,37 @@ import {
 } from '../types/Augur/Augur'
 
 // Import entity types from the schema
-import {InitialReport, User} from '../types/schema'
+import {InitialReport, User, Market} from '../types/schema'
 
 export function handleInitialReportSubmitted(event: InitialReportSubmitted): void {
   let id = event.params.market.toHex()
   let ir = new InitialReport(id)
 
-  ir.universe = event.params.universe
-  ir.reporter = event.params.reporter
-  ir.amountStaked = event.params.amountStaked
-  ir.isDesignatedReporter = event.params.isDesignatedReporter
-  ir.payoutNumerators = event.params.payoutNumerators
-  ir.invalid = event.params.invalid
+  let market = Market.load(id)
+  market.status = "initial report submitted"
+  market.payoutNumerators = event.params.payoutNumerators
+  market.invalid = event.params.invalid
+  market.totalDisputed = market.totalDisputed.plus(event.params.amountStaked as BigInt)
+  market.save()
 
-  ir.save()
-
-  // User data below
+  // create user if it doesnt exist
   let userID = event.params.reporter.toHex()
   let user = User.load(userID)
   if (user == null){
     user = new User(userID)
-    user.marketsCreated = new Array<Bytes>()
-    user.claimedTrades = new Array<string>()
+    user.marketsCreated = BigInt.fromI32(0)
     user.initialReports = new Array<string>()
-    user.disputeCrowdsourcers = new Array<Bytes>()
-    user.ordersCreated = new Array<Bytes>()
-    user.ordersCancelled = new Array<Bytes>()
-    user.ordersFilled = new Array<Bytes>()
     user.save()
   }
 
+  ir.timestamp = event.block.timestamp
+  ir.reporter = user.id
+  ir.market = id
+  ir.amountStaked = event.params.amountStaked
+  ir.isDesignatedReporter = event.params.isDesignatedReporter
+  ir.payoutNumerators = event.params.payoutNumerators
+  ir.invalid = event.params.invalid
+  ir.save()
 }
 
 export function handleInitialReporterRedeemed(event: InitialReporterRedeemed): void {
@@ -56,25 +57,17 @@ export function handleInitialReporterTransferred(event: InitialReporterTransferr
   let id = event.params.market.toHex()
   let ir = InitialReport.load(id)
 
-  ir.reporter = event.params.to
-
-  ir.save()
-
   // User data below
   let userID = event.params.to.toHex()
   let user = User.load(userID)
   if (user == null){
     user = new User(userID)
-    user.marketsCreated = new Array<Bytes>()
-    user.claimedTrades = new Array<string>()
+    user.marketsCreated = BigInt.fromI32(0)
     user.initialReports = new Array<string>()
-    user.disputeCrowdsourcers = new Array<Bytes>()
-    user.ordersCreated = new Array<Bytes>()
-    user.ordersCancelled = new Array<Bytes>()
-    user.ordersFilled = new Array<Bytes>()
     user.tokensOwned = new Array<string>()
     user.save()
   }
 
-
+  ir.reporter = user.id
+  ir.save()
 }
